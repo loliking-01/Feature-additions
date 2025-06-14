@@ -1,68 +1,78 @@
 package indi.wenyan.interpreter.structure;
 
-import indi.wenyan.interpreter.handler.LocalCallHandler;
-import indi.wenyan.interpreter.utils.JavaCallCodeWarper;
+import indi.wenyan.content.handler.LocalCallHandler;
 import indi.wenyan.interpreter.utils.WenyanDataParser;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 
-public class WenyanArrayObject extends WenyanObject {
-    private final ArrayList<WenyanValue> values = new ArrayList<>();
-    private final WenyanValue length = new WenyanValue(WenyanValue.Type.INT, 0, true);
+public class WenyanArrayObject implements WenyanObject {
+    private final ArrayList<WenyanNativeValue> values = new ArrayList<>();
 
-    public WenyanArrayObject() {
-        super(new WenyanArrayObjectType());
-        variable.put(WenyanDataParser.LONG_ID, length);
-    }
+    public WenyanArrayObject() {}
 
     public WenyanArrayObject concat(WenyanArrayObject other) {
         values.addAll(other.values);
-        length.setValue(values.size());
         return this;
     }
 
-    public void add(WenyanValue wenyanValue) {
+    public void add(WenyanNativeValue wenyanValue) {
         values.add(wenyanValue);
-        length.setValue(values.size());
     }
 
-    public WenyanValue get(WenyanValue index) throws WenyanException.WenyanThrowException {
+    public WenyanNativeValue get(WenyanNativeValue index) throws WenyanException.WenyanThrowException {
         try {
-            return values.get((int) index.casting(WenyanValue.Type.INT).getValue() - 1);
+            return values.get((int) index.casting(WenyanType.INT).getValue() - 1);
         } catch (RuntimeException e) {
             throw new WenyanException.WenyanDataException(e.getMessage());
         }
     }
 
     @Override
-    public String toString() {
-        return values.toString();
+    public void setVariable(String name, WenyanNativeValue value) {
+        throw new WenyanException(Component.translatable("error.wenyan_nature.variable_not_found_").getString() + name);
     }
 
-    public static class WenyanArrayObjectType extends WenyanObjectType {
-        public WenyanArrayObjectType() {
-            super(null, "列");
-            functions.put(WenyanDataParser.ARRAY_GET_ID, new WenyanValue(WenyanValue.Type.FUNCTION,
-                    new WenyanValue.FunctionSign(WenyanDataParser.ARRAY_GET_ID,
-                            new WenyanValue.Type[]{WenyanValue.Type.LIST, WenyanValue.Type.INT},
-                            new JavaCallCodeWarper(new LocalCallHandler(args -> {
+    @Override
+    public WenyanNativeValue getAttribute(String name) {
+        return switch (name) {
+            case WenyanDataParser.ARRAY_GET_ID -> new WenyanNativeValue(WenyanType.FUNCTION,
+                    new WenyanNativeValue.FunctionSign(WenyanDataParser.ARRAY_GET_ID,
+                            new WenyanType[]{WenyanType.LIST, WenyanType.INT},
+                            new LocalCallHandler(args -> {
                                 if (args.length != 2)
                                     throw new WenyanException.WenyanVarException(Component.translatable("error.wenyan_nature.number_of_arguments_does_not_match").getString());
-                                args[0].casting(WenyanValue.Type.LIST);
-                                args[1].casting(WenyanValue.Type.INT);
+                                args[0].casting(WenyanType.LIST);
+                                args[1].casting(WenyanType.INT);
                                 return ((WenyanArrayObject) args[0].getValue()).get(args[1]);
-                            }))), true));
-            functions.put(WenyanDataParser.ITER_ID, new WenyanValue(WenyanValue.Type.FUNCTION,
-                    new WenyanValue.FunctionSign(WenyanDataParser.ITER_ID,
-                            new WenyanValue.Type[]{WenyanValue.Type.LIST},
-                            new JavaCallCodeWarper(new LocalCallHandler(args -> {
+                            })), true);
+            case WenyanDataParser.ITER_ID -> new WenyanNativeValue(WenyanType.FUNCTION,
+                    new WenyanNativeValue.FunctionSign(WenyanDataParser.ITER_ID,
+                            new WenyanType[]{WenyanType.LIST},
+                            new LocalCallHandler(args -> {
                                 if (args.length != 1)
                                     throw new WenyanException.WenyanVarException(Component.translatable("error.wenyan_nature.number_of_arguments_does_not_match").getString());
-                                args[0].casting(WenyanValue.Type.LIST);
-                                return new WenyanValue(WenyanValue.Type.OBJECT,
+                                args[0].casting(WenyanType.LIST);
+                                return new WenyanNativeValue(WenyanType.OBJECT,
                                         ((WenyanArrayObject) args[0].getValue()).values.iterator(), true);
-                            }))), true));
-        }
+                            })), true);
+            case WenyanDataParser.LONG_ID -> new WenyanNativeValue(WenyanType.INT, values.size(), true);
+            default -> throw new WenyanException(Component.translatable("error.wenyan_nature.variable_not_found_").getString() + name);
+        };
+    }
+
+    @Override
+    public WenyanObjectType getParent() {
+        return null;
+    }
+
+    @Override
+    public WenyanType type() {
+        return WenyanType.LIST;
+    }
+
+    @Override
+    public String toString() {
+        return values.toString();
     }
 }
