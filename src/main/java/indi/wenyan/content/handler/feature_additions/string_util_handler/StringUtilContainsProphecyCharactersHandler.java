@@ -25,7 +25,7 @@ public class StringUtilContainsProphecyCharactersHandler implements JavacallHand
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.getFirst().toString();
+        String original= (String) args.getFirst();
         boolean result=false;
         for (char c : original.toCharArray()) {
             if (PROPHECY_CHARACTERS.indexOf(c) != -1) {

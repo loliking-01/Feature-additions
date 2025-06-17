@@ -24,9 +24,9 @@ public class StringUtilReplaceHandler implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.get(0).toString();
-        String target=args.get(1).toString();
-        String replaceTo=args.get(2).toString();
+        String original= (String) args.get(0);
+        String target= (String) args.get(1);
+        String replaceTo= (String) args.get(2);
 
         return new WenyanNativeValue(WenyanType.STRING,original.replace(target,replaceTo),false);
     }

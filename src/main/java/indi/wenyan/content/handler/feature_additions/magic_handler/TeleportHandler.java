@@ -3,7 +3,6 @@ package indi.wenyan.content.handler.feature_additions.magic_handler;
 import indi.wenyan.content.handler.JavacallHandler;
 import indi.wenyan.interpreter.structure.*;
 import indi.wenyan.interpreter.utils.JavacallHandlers;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 
 import java.util.List;
@@ -17,19 +16,17 @@ import java.util.List;
  */
 public class TeleportHandler implements JavacallHandler {
     public static final WenyanType[] ARGS_TYPE =
-            {WenyanType.OBJECT,WenyanType.DOUBLE, WenyanType.DOUBLE, WenyanType.DOUBLE};
+            {WenyanType.ENTITY,WenyanType.DOUBLE, WenyanType.DOUBLE, WenyanType.DOUBLE};
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        Object object = args.get(0);
-        if (object instanceof Entity entity) {
-            double x = (double) args.get(1);
-            double y = (double) args.get(2);
-            double z = (double) args.get(3);
-            entity.teleportTo(x, y, z);
-        }else {
-            throw new WenyanException(Component.translatable("error.wenyanextra.exception.no_entity").getString());
-        }
+        WenyanEntityObject wenyanEntityObject = (WenyanEntityObject) args.get(0);
+        Entity entity=wenyanEntityObject.getEntity();
+
+        double x = (double) args.get(1);
+        double y = (double) args.get(2);
+        double z = (double) args.get(3);
+        entity.teleportTo(x+entity.getX(), y+entity.getY(), z+entity.getZ());
         return WenyanValue.NULL;
     }
 

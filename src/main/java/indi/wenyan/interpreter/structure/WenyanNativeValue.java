@@ -42,7 +42,7 @@ public class WenyanNativeValue implements WenyanValue {
             case BOOL -> false;
             case STRING -> "";
             case LIST -> new WenyanArrayObject();
-            case OBJECT, OBJECT_TYPE, FUNCTION -> null;
+            case OBJECT, OBJECT_TYPE, FUNCTION ,ENTITY -> null;
         };
         return new WenyanNativeValue(type, value1, isConst);
     }
@@ -114,7 +114,12 @@ public class WenyanNativeValue implements WenyanValue {
         if (type == WenyanType.OBJECT) {
             if (this.type == WenyanType.LIST) {
                 return this;
+            } else if (this.type == WenyanType.ENTITY) {
+                return this;
             }
+        }
+        if (type == WenyanType.ENTITY){
+            return this;
         }
         throw new WenyanException.WenyanTypeException(Component.translatable("error.wenyan_nature.cannot_cast_").getString() + this.type + Component.translatable("error.wenyan_nature._to_").getString() + type);
     }
@@ -241,6 +246,7 @@ public class WenyanNativeValue implements WenyanValue {
             case FUNCTION -> WenyanString((FunctionSign) value);
             case OBJECT -> Component.translatable("type.wenyan_nature.object").getString();
             case OBJECT_TYPE -> Component.translatable("type.wenyan_nature.object_type").getString();
+            case ENTITY -> Component.translatable("type.wenyan_nature.entity").getString();
         };
     }
 

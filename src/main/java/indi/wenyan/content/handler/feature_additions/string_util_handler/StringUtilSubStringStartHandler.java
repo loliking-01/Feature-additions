@@ -23,7 +23,7 @@ public class StringUtilSubStringStartHandler implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.get(0).toString();
+        String original= (String) args.get(0);
         int start=(int) args.get(1);
         if (start>original.length()){
             throw new WenyanException("謬：始数不可超文长");

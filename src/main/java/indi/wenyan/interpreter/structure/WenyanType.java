@@ -11,8 +11,8 @@ public enum WenyanType {
     LIST,
     OBJECT,
     OBJECT_TYPE,
+    ENTITY,
     FUNCTION;
-
     @Override
     public String toString() {
         return Component.translatable("type.wenyan_nature." + name().toLowerCase()).getString();

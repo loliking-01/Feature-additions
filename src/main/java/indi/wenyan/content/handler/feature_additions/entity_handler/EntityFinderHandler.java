@@ -33,10 +33,10 @@ public class EntityFinderHandler<T extends Entity> implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         Level level;
-        if (context.runner().runner() instanceof HandRunnerEntity runner) {
+        if (context.runnerWarper().runner() instanceof HandRunnerEntity runner) {
             level=runner.level();
         }else{
-            BlockRunner runner= (BlockRunner) context.runner().runner();
+            BlockRunner runner= (BlockRunner) context.runnerWarper().runner();
             level=runner.getLevel();
         }
         List<Object> args;
@@ -68,7 +68,7 @@ public class EntityFinderHandler<T extends Entity> implements JavacallHandler {
         if (args.size() == 4) {
             WenyanArrayObject list=new WenyanArrayObject();
             for (T entity : entities) {
-                list.add(new WenyanNativeValue(WenyanType.OBJECT, entity,false));
+                list.add(new WenyanNativeValue(WenyanType.OBJECT, new WenyanEntityObject<>(entity),false));
             }
             return new WenyanNativeValue(WenyanType.LIST, list, false);
         }
@@ -76,7 +76,7 @@ public class EntityFinderHandler<T extends Entity> implements JavacallHandler {
         T nearestEntity = entities.get(0); // 使用泛型类型参数T
 
         if (nearestEntity != null) {
-            return new WenyanNativeValue(WenyanType.OBJECT, nearestEntity, false);
+            return new WenyanNativeValue(WenyanType.OBJECT,new WenyanEntityObject<>(nearestEntity),false);
         }
         return WenyanValue.NULL;
     }

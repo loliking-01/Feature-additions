@@ -20,8 +20,8 @@ public class StringUtilSplitHandler implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.get(0).toString();
-        String toSplit=args.get(1).toString();
+        String original= (String) args.get(0);
+        String toSplit= (String) args.get(1);
 
         List<String> stringList= List.of(original.split(toSplit));
         WenyanArrayObject list=new WenyanArrayObject();

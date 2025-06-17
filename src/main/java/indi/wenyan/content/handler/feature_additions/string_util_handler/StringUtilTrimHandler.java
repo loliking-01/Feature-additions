@@ -23,7 +23,7 @@ public class StringUtilTrimHandler implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.get(0).toString();
+        String original= (String) args.get(0);
 
         return new WenyanNativeValue(WenyanType.STRING,original.trim(),false);
     }

@@ -137,7 +137,27 @@ public final class WenyanPackages {
             .function("「辨谶凶」", new StringUtilDiagnoseProphecyHandler())
             .function("「蕴谶骨」", new StringUtilContainsProphecyCharactersHandler())
             .function("「虚室文」", new StringUtilIsEmptyHandler())
+            .function("「万言感」", new GetLastMessageHandler())
+            .function("「感言」", new GetMyMessageHandler())
+            .function("「密语」", new SetChatHideFilterHandler())
+            .function("「阅简」", new GetSignAndLecternMsgHandler())
+            .function("「题篆」", new SetSignAndLecternMsgHandler())
+            .function("「赋名」", new SetEntityCustomNameHanlder())
             .build();
+    public static final WenyanRuntime FIND_ENTITY =WenyanPackageBuilder.create()
+            .function("「大寻」", new EntityFinderHandler<>(Entity.class))
+            .function("「器象」", new EntityFinderHandler<>(ItemEntity.class))
+            .function("「灵察」", new EntityFinderHandler<>(LivingEntity.class))
+            .function("「煞觅」", new EntityFinderHandler<>(Monster.class))
+            .function("「气踪」", new EntityFinderHandler<>(Projectile.class))
+            .function("「天工」", new EntityFinderHandler<>(VehicleEntity.class))
+            .function("「真觅」", new EntityFinderHandler<>(Player.class))
+            .function("「兽觅」", new EntityFinderHandler<>(Animal.class))
+            .build();
+    public static final WenyanRuntime THAUMATURGY =WenyanPackageBuilder.create()
+            .function("「瞬」", new TeleportHandler())
+            .build();
+
 
     public static final WenyanRuntime HAND_ENVIRONMENT = WenyanPackageBuilder.create()
                 .environment(WENYAN_BASIC_PACKAGES)
@@ -148,21 +168,6 @@ public final class WenyanPackages {
                 .function("「雷」", new ThunderHandler())
                 .object(WenyanObjectTypes.VECTOR3)
                 .function("「己方位」", new SelfPositionHandler())
-                .function("「密语」", new SetChatHideFilterHandler())
-                .function("「阅简」", new GetSignAndLecternMsgHandler())
-                .function("「题篆」", new SetSignAndLecternMsgHandler())
-                .function("「赋名」", new SetEntityCustomNameHanlder())
-                .function("「显名」", new GetEntityNameHandler())
-                .function("「物之隐名」", new GetItemInternalNameHandler())
-                .function("「大寻」", new EntityFinderHandler<>(Entity.class))
-                .function("「器象」", new EntityFinderHandler<>(ItemEntity.class))
-                .function("「灵察」", new EntityFinderHandler<>(LivingEntity.class))
-                .function("「煞觅」", new EntityFinderHandler<>(Monster.class))
-                .function("「气踪」", new EntityFinderHandler<>(Projectile.class))
-                .function("「天工」", new EntityFinderHandler<>(VehicleEntity.class))
-                .function("「真觅」", new EntityFinderHandler<>(Player.class))
-                .function("「兽觅」", new EntityFinderHandler<>(Animal.class))
-
                 .build();
 
     public static final WenyanRuntime BLOCK_ENVIRONMENT = WenyanPackageBuilder.create()
@@ -181,22 +186,6 @@ public final class WenyanPackages {
                 .function("「己於南」", new SelfPositionBlockHandler(Direction.SOUTH))
                 .function("「己於西」", new SelfPositionBlockHandler(Direction.WEST))
                 .function("「己於北」", new SelfPositionBlockHandler(Direction.NORTH))
-                .function("「万言感」", new GetLastMessageHandler())
-                .function("「感言」", new GetMyMessageHandler())
-                .function("「阅简」", new GetSignAndLecternMsgHandler())
-                .function("「题篆」", new SetSignAndLecternMsgHandler())
-                .function("「赋名」", new SetEntityCustomNameHanlder())
-                .function("「显名」", new GetEntityNameHandler())
-                .function("「物之隐名」", new GetItemInternalNameHandler())
-                .function("「瞬」", new TeleportHandler())
-                .function("「大寻」", new EntityFinderHandler<>(Entity.class))
-                .function("「器象」", new EntityFinderHandler<>(ItemEntity.class))
-                .function("「灵察」", new EntityFinderHandler<>(LivingEntity.class))
-                .function("「煞觅」", new EntityFinderHandler<>(Monster.class))
-                .function("「气踪」", new EntityFinderHandler<>(Projectile.class))
-                .function("「天工」", new EntityFinderHandler<>(VehicleEntity.class))
-                .function("「真觅」", new EntityFinderHandler<>(Player.class))
-                .function("「兽觅」", new EntityFinderHandler<>(Animal.class))
                 .build();
 
     public static final WenyanRuntime CRAFTING_BASE_ENVIRONMENT = WenyanPackageBuilder.create()
@@ -209,7 +198,10 @@ public final class WenyanPackages {
         put("「「位經」」", BIT_PACKAGES);
         put("「「易經」」", RANDOM_PACKAGES);
         put("「「玄文库」」", STRING_UTILS_PACKAGES);
+        put("「「寻炁法」」",FIND_ENTITY);
+        put("「「奇术」」",THAUMATURGY);
     }};
+
 
     public static class WenyanObjectTypes {
         public static final JavacallObjectType VECTOR3 = new JavacallObjectType(null, "「方位」",

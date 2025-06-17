@@ -40,10 +40,10 @@ public class SetSignAndLecternMsgHandler implements JavacallHandler {
         //获取必须参数
         Level level;
         Player player=context.holder();
-        if (context.runner().runner() instanceof HandRunnerEntity runner){
+        if (context.runnerWarper().runner() instanceof HandRunnerEntity runner){
             level = runner.level();
         }else{
-            BlockRunner runner= (BlockRunner) context.runner().runner();
+            BlockRunner runner= (BlockRunner) context.runnerWarper().runner();
             level=runner.getLevel();
         }
 
@@ -53,9 +53,7 @@ public class SetSignAndLecternMsgHandler implements JavacallHandler {
         int length = (int) list.getAttribute(WenyanDataParser.LONG_ID).getValue();
         for (int i = 1; i <= length; i++) {
             WenyanNativeValue obj = list.get(new WenyanNativeValue(WenyanType.INT, i,false));
-            if (obj.type()!=WenyanType.STRING){
-                throw new WenyanException("謬：列应全为文字！然，其中掺杂【"+obj+"】");
-            }
+            obj.casting(WenyanType.STRING);
         }
         Double x = (Double) args.get(1), y = (Double) args.get(2), z = (Double) args.get(3);
         switch (level.getBlockEntity(BlockPos.containing(x, y, z))) {

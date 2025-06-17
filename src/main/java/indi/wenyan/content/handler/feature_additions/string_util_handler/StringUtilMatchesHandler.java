@@ -24,8 +24,8 @@ public class StringUtilMatchesHandler implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.get(0).toString();
-        String pattern=args.get(1).toString();
+        String original= (String) args.get(0);
+        String pattern= (String) args.get(1);
         boolean result;
         try {
             result=original.matches(pattern);

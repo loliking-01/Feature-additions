@@ -22,8 +22,8 @@ public class StringUtilContainsHandler implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.get(0).toString();
-        String target=args.get(1).toString();
+        String original= (String) args.get(0);
+        String target= (String) args.get(1);
         return new WenyanNativeValue(WenyanType.BOOL,original.contains(target),false);
     }
     @Override

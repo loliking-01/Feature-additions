@@ -26,7 +26,7 @@ public class StringUtilDiagnoseProphecyHandler implements JavacallHandler {
     @Override
     public WenyanNativeValue handle(JavacallContext context) throws WenyanException.WenyanThrowException {
         List<Object> args = JavacallHandlers.getArgs(context.args(), ARGS_TYPE);
-        String original=args.get(0).toString();
+        String original= (String) args.get(0);
         String result="无咎";
         try {
             Pattern.compile(original);
