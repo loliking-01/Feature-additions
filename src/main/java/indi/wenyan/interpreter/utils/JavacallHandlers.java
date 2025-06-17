@@ -12,12 +12,11 @@ public final class JavacallHandlers {
     private JavacallHandlers() {}
 
     public static List<Object> getArgs(List<WenyanNativeValue> args, WenyanType[] args_type) throws WenyanException.WenyanTypeException {
-        List<Object> newArgs = new ArrayList<>(args.size());
+        List<Object> newArgs = new ArrayList<>();
         if (args.size() != args_type.length)
             throw new WenyanException.WenyanTypeException(Component.translatable("error.wenyan_nature.number_of_arguments_does_not_match").getString());
-        for (int i = 0; i < args.size(); i++){
-            newArgs.add(i,args.get(i).casting(args_type[i]).getValue());
-        }
+        for (int i = 0; i < args.size(); i++)
+            newArgs.add(args.get(i).casting(args_type[i]).getValue());
         return newArgs;
     }
 

@@ -65,10 +65,6 @@ public final class WenyanPackages {
             .function(new String[] {"小於","小于"}, WenyanPackageBuilder.compareOperation((a, b) -> a.compareTo(b) < 0))
 
             .function("「」", args -> WenyanValue.NULL)
-            .function("書", args -> {
-                System.out.println(args);
-                return WenyanValue.NULL;
-            })
             .build();
 
     public static final WenyanRuntime MATH_PACKAGES = WenyanPackageBuilder.create()
@@ -171,7 +167,7 @@ public final class WenyanPackages {
 
     public static final WenyanRuntime BLOCK_ENVIRONMENT = WenyanPackageBuilder.create()
                 .environment(WENYAN_BASIC_PACKAGES)
-                .function(new String[] {"書","书"}, new NewOutputHandler())
+                .function(new String[] {"書","书"}, new OutputHandler())
                 .function("「觸」", new TouchHandler(), TouchHandler.ARGS_TYPE)
 //                .function("「放置」", new BlockPlaceHandler(holder,
 //                        (BlockItem) Items.ACACIA_LOG.asItem()
@@ -203,16 +199,10 @@ public final class WenyanPackages {
                 .function("「兽觅」", new EntityFinderHandler<>(Animal.class))
                 .build();
 
-    public static WenyanRuntime craftingEnvironment(CraftingAnswerChecker checker) {
-        return WenyanPackageBuilder.create()
-                .environment(WENYAN_BASIC_PACKAGES)
-                .environment(checker.inputEnvironment())
-                .function("書", args -> {
-                    checker.accept(args);
-                    return WenyanValue.NULL;
-                })
-                .build();
-    }
+    public static final WenyanRuntime CRAFTING_BASE_ENVIRONMENT = WenyanPackageBuilder.create()
+            .environment(WENYAN_BASIC_PACKAGES)
+            .function("書", new OutputHandler())
+            .build();
 
     public static final Map<String, WenyanRuntime> PACKAGES = new HashMap<>(){{
         put("「「算經」」", MATH_PACKAGES);
