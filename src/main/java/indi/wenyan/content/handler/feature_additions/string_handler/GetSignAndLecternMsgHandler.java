@@ -37,10 +37,10 @@ public class GetSignAndLecternMsgHandler implements JavacallHandler {
         //获取必须参数
         Level level;
         Player player=context.holder();
-        if (context.runnerWarper().runner() instanceof HandRunnerEntity runner){
+        if (context.runner().runner() instanceof HandRunnerEntity runner){
             level = runner.level();
         }else{
-            BlockRunner runner= (BlockRunner) context.runnerWarper().runner();
+            BlockRunner runner= (BlockRunner) context.runner().runner();
             level=runner.getLevel();
         }
 
@@ -53,7 +53,6 @@ public class GetSignAndLecternMsgHandler implements JavacallHandler {
                 boolean isFrontText = sign.isFacingFrontText(player); // 判断玩家是否面向正面
                 SignText signText = sign.getText(isFrontText); // 获取正面或背面的 SignText 对象
                 Component[] messages = signText.getMessages(false); // false 表示不过滤客户端样式
-
                 for (int i = 0; i < messages.length; i++) {
                     wenyanArrayObject.add(new WenyanNativeValue(
                             WenyanType.STRING,
