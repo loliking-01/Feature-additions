@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 /**
- * @author qq240
+ * @author I_am_a_lolikong
  * @version 1.0
  * @className WenyanEntityObject
  * @Description TODO
